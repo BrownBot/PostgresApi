@@ -30,7 +30,7 @@ namespace PostgresApi
         public void ConfigureServices(IServiceCollection services)
         {
             //var connectString = Configuration.GetConnectionString("toptal-project-db");
-            services.AddDbContext<CoreDbContext>(options => options.UseNpgsql("Host=localhost;Database=bob;Username=bob;Password=log"));
+            services.AddDbContext<CoreDbContext>(options => options.UseNpgsql("Host=localhost;Database=bob;User ID=bob;Password=log"));
 
             services.AddScoped<IRepository<Item>>(x => new EFRepository<Item>(x.GetRequiredService<CoreDbContext>()));
 
