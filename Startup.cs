@@ -1,11 +1,15 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using PostgresApi.DataAccess;
+using PostgresApi.DataAccess.Models;
+using PostgresApi.DataAccess.Models.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +29,10 @@ namespace PostgresApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //var connectString = Configuration.GetConnectionString("toptal-project-db");
+            services.AddDbContext<CoreDbContext>(options => options.UseNpgsql("Host=localhost;Database=bob;Username=bob;Password=log"));
+
+            services.AddScoped<IRepository<Item>>(x => new EFRepository<Item>(x.GetRequiredService<CoreDbContext>()));
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
