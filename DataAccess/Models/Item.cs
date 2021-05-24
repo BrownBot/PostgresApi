@@ -19,5 +19,7 @@ namespace PostgresApi.DataAccess.Models
 
         [StringLength(512, ErrorMessage = "The {0} value exceeds {1} characters")]
         public string LongDescription { get; set; }
+
+        public byte[] Image { get; set; }
     }
 }
