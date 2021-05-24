@@ -13,7 +13,11 @@ namespace PostgresApi.DataAccess.Models
         
         [StringLength(10, ErrorMessage = "The {0} value exceeds {1} characters")]
         public string Code { get; set; }
+        
         [StringLength(128, ErrorMessage = "The {0} value exceeds {1} characters")]
         public string Name { get; set; }
+
+        [StringLength(512, ErrorMessage = "The {0} value exceeds {1} characters")]
+        public string LongDescription { get; set; }
     }
 }
