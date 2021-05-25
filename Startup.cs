@@ -10,6 +10,7 @@ using Microsoft.OpenApi.Models;
 using PostgresApi.DataAccess;
 using PostgresApi.DataAccess.Models;
 using PostgresApi.DataAccess.Models.Interfaces;
+using Microsoft.AspNetCore.HttpOverrides;
 using Serilog;
 using System;
 using System.Collections.Generic;
@@ -62,6 +63,10 @@ namespace PostgresApi
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            });
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "PostgresApi v1"));
 
