@@ -10,6 +10,7 @@ using Microsoft.OpenApi.Models;
 using PostgresApi.DataAccess;
 using PostgresApi.DataAccess.Models;
 using PostgresApi.DataAccess.Models.Interfaces;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,16 +20,26 @@ namespace PostgresApi
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IWebHostEnvironment hostingEnvironment)
         {
             Configuration = configuration;
+            HostingEnvironment = hostingEnvironment;
         }
 
         public IConfiguration Configuration { get; }
+        public IWebHostEnvironment HostingEnvironment { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            Log.Logger = new LoggerConfiguration()
+            .Enrich.FromLogContext()
+            .MinimumLevel.Debug()
+            .WriteTo.File("Logs/log.log", rollOnFileSizeLimit: true, fileSizeLimitBytes: 500000, shared: true)
+            .CreateLogger();
+            Log.Information("Logging configured for Environment = '{0}'.", HostingEnvironment.EnvironmentName);
+
+
             //var connectString = Configuration.GetConnectionString("toptal-project-db");
             services.AddDbContext<CoreDbContext>(options => options.UseNpgsql("Host=localhost;Database=bob;User ID=bob;Password=log"));
 
