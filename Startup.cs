@@ -45,10 +45,10 @@ namespace PostgresApi
             services.AddDbContext<CoreDbContext>(options => options.UseNpgsql("Host=localhost;Database=bob;User ID=bob;Password=log"));
 
             services.AddScoped<IRepository<Item>>(x => new EFRepository<Item>(x.GetRequiredService<CoreDbContext>()));
-            services.AddCors(options =>
-            {
-                options.AddPolicy("PolicyName", builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
-            });
+            //services.AddCors(options =>
+            //{
+            //    options.AddPolicy("PolicyName", builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+            //});
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -71,7 +71,7 @@ namespace PostgresApi
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "PostgresApi v1"));
 
             app.UseRouting();
-            app.UseCors("PolicyName");
+            //app.UseCors("PolicyName");
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
